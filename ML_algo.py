@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 """
     Machine learning algo. -> Supervised Learning (data = user watch history)
     By GUtech students
+    
 """
 class Db:
     def __init__(self) -> None:
