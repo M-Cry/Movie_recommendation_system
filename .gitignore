@@ -1,0 +1,9 @@
+
+# ignored directories
+__pycache__
+
+# ignore ALL .log files
+*.log
+
+# ignore generated user watch history file
+user watch history
