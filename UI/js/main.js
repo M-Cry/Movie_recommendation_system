@@ -1,3 +1,9 @@
+async function set_user(){
+	const selectElement = document.getElementById("standard-select");
+    const user = selectElement.options[selectElement.selectedIndex].value;
+
+    await eel.set_user(user)();
+}
 
 async function record_movie(elm){
     movie_data = document.getElementById(elm).innerText
@@ -5,11 +11,37 @@ async function record_movie(elm){
     swal("(" + data[1] + ") movie", data[0]+" has been watched", "success");
 }
 
-async function run_algo() {
-    signal = await eel.run_algo()();
+async function run_collabrative_filter_algo() {
+    swal("Not implemented yet", "I'm working on it", "error");
+
+    /*
+        A ton of work needed here 
+
+        in short see the difference of movie titles from the users history and recommend them to 
+        other accordingly via reading each txt file and storing them into a list then compare
+    */
+}
+
+async function run_content_filter_algo() {
+    signal = await eel.run_content_filter_algo()();
     if (signal == "NONE"){
-        swal("NO RECORDS", "Make sure to watch movies first", "error");
+        swal("Not implemented yet", "I'm working on it", "error");
+        // swal("NO RECORDS", "Make sure to watch movies first", "error");
     }else{
+
+        /*
+        
+            history file has been changed from 
+            "user watch hostory" => "username history"
+
+            ####################
+
+            Need to dynamically call for these new file names according to the current username
+            Thats it no further work on this function/algo.
+
+            @Ahmed 
+        
+        */
         let movies_info_txt_tag = document.getElementsByName("movie_info_txt")
         var mov_counter = 0
 

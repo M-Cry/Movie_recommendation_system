@@ -8,6 +8,7 @@
   <title>Movie recommendation system ML based engine</title>
   <link rel="stylesheet" href="css/design.css" media="screen">
   <link rel="stylesheet" href="css/Home.css" media="screen">
+  <link rel="stylesheet" href="css/custom.css" media="screen">
   <script class="u-script" type="text/javascript" src="js/jquery.js" defer=""></script>
   <script class="u-script" type="text/javascript" src="js/gen.js" defer=""></script>
   <script type="text/javascript" src="js/main.js"></script>
@@ -65,20 +66,31 @@
             class="u-align-center u-container-style u-list-item u-radius-20 u-repeater-item u-shape-round u-video-cover u-white u-list-item-3">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3"><span
                 class="u-file-icon u-icon u-icon-3"><img src="img/2377746.png" alt=""></span>
-              <a onclick="run_algo()"
-                class="u-btn u-btn-round u-button-style u-hover-feature u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-3">Run
-                Algo.</a>
+              <a onclick="run_content_filter_algo()"
+                class="u-btn u-btn-round u-button-style u-hover-feature u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-3">Content-based</a>
             </div>
           </div>
           <div
             class="u-align-center u-container-style u-list-item u-radius-20 u-repeater-item u-shape-round u-video-cover u-white u-list-item-4">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-4"><span
-                class="u-file-icon u-icon u-icon-4"><img src="img/2340249.png" alt=""></span>
-              <a onclick="get_history()"
-                class="u-btn u-btn-round u-button-style u-hover-feature u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-4">History</a>
+                class="u-file-icon u-icon u-icon-4"><img src="img/2377746.png" alt=""></span>
+              <a onclick="run_collabrative_filter_algo()"
+                class="u-btn u-btn-round u-button-style u-hover-feature u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-4">Collabrative</a>
             </div>
           </div>
         </div>
+
+        <div style="margin: 20px;">
+          <label for="standard-select" id="pick-user-label">Currnt User</label>
+          <div class="select">
+            <select id="standard-select" onchange="set_user()">
+              <option value="Ahmed">Ahmed</option>
+              <option value="Nasser">Nasser</option>
+              <option value="Mohammed">Mohammed</option>
+            </select>
+          </div>
+        </div>
+
       </div>
       <p class="u-align-center u-text u-text-body-alt-color u-text-2">Ahmed AL Riyami
         (18-0155)<br>Mohammed Al Ismaili (19-0659)<br>Nasser Al Wahibi (17-0026)

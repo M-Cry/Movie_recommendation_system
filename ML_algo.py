@@ -9,24 +9,25 @@ import matplotlib.pyplot as plt
     
 """
 class Db:
-    def __init__(self) -> None:
-        self.history_file = "user watch history"
-        
-    def get_history(self):
-        try:
-            with open(self.history_file) as file:
-                lines = file.readlines()
-                return lines
-        except FileNotFoundError:
-            # No movies has been watched yet
-            return "NONE"
+    def __init__(self, user) -> None:
+        self.user = user
+        self.history_file = f"{user} history.txt"
 
     def movie_watched(self, movie_info):
         with open(self.history_file, "a") as file:
             file.write(movie_info + "\n")
         return movie_info.split(",")[:2]
 
-    def run_algo(self):
+    def run_collabrative_filter_algo(self):
+        """
+
+            Collabrative filtering algorithm implementation here
+        
+        """
+        pass
+
+
+    def run_content_filter_algo(self):
         genres = {}
         try:
             with open(self.history_file) as file:

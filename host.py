@@ -3,12 +3,13 @@ import ML_algo as algo
 eel.init('UI')
 
 history = {}
+current_user = ""
 
 @eel.expose
-def run_algo():
-    global history
-    obj = algo.Db()
-    data = obj.run_algo()
+def run_content_filter_algo():
+    global history, current_user
+    obj = algo.Db(current_user)
+    data = obj.run_content_filter_algo()
 
     if len(data) == 0:
         return "NONE"
@@ -27,6 +28,11 @@ def run_algo():
     return movies
     
 @eel.expose
+def set_user(user):
+    global current_user
+    current_user = user
+    
+@eel.expose
 def get_graph():
     global history
     obj = algo.History(history)
@@ -43,17 +49,9 @@ def get_statistics():
     return obj.get_statistics()
 
 @eel.expose
-def get_history():
-    global history
-    obj = algo.Db()
-    # Return movies titles only
-    movies = [x.split(",")[0] for x in obj.get_history()]
-    movies.reverse()
-    return movies
-
-@eel.expose
 def movie_watched(movie_info):
-    obj = algo.Db()
+    global current_user
+    obj = algo.Db(current_user)
     return obj.movie_watched(movie_info)
 
 eel.start('home.html', port=9764, host='localhost',  mode='chrome', size=(1920, 1080))
