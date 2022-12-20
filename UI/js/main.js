@@ -12,14 +12,27 @@ async function record_movie(elm){
 }
 
 async function run_collabrative_filter_algo() {
-    swal("Not implemented yet", "I'm working on it", "error");
+    const user_selector = document.getElementById("standard-select").options;
+    const selected_user = user_selector[user_selector.selectedIndex].value;
+    let all_users = [];
+    
+    // get the list of all users and store in all_users
+    for (const key in user_selector) {
+        try {
+            current_value = user_selector[key].text
+            if (current_value != selected_user && current_value != null){
+                console.log(current_value);
+                all_users.push(current_value);
+            }
+        } catch (error) {
+            console.log("");
+        }
+    }
+    
+    // creates a custom alert pop up
+    swal("We did it", "I'm working on it", "success");
 
-    /*
-        A ton of work needed here 
-
-        in short see the difference of movie titles from the users history and recommend them to 
-        other accordingly via reading each txt file and storing them into a list then compare
-    */
+    await eel.run_collabrative_filter_algo(all_users)();
 }
 
 async function run_content_filter_algo() {

@@ -6,6 +6,13 @@ history = {}
 current_user = ""
 
 @eel.expose
+def run_collabrative_filter_algo(users):
+    global current_user
+    obj = algo.Db(current_user)
+    data = obj.run_collabrative_filter_algo(users)
+    return data
+
+@eel.expose
 def run_content_filter_algo():
     global history, current_user
     obj = algo.Db(current_user)
