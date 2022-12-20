@@ -18,14 +18,24 @@ class Db:
             file.write(movie_info + "\n")
         return movie_info.split(",")[:2]
 
-    def run_collabrative_filter_algo(self):
+    def run_collabrative_filter_algo(self, users):
+        """
+            Collabrative filtering algorithm implementation
         """
 
-            Collabrative filtering algorithm implementation here
-        
-        """
-        pass
+        try:
+            with open(f'{self.user} history.txt') as user_1:
+                with open(f'{users[0]} history.txt') as user_2:
+                    with open(f'{users[1]} history.txt') as user_3:
+                        user1_history = user_1.readlines()
+                        user2_history = user_2.readlines()
+                        user3_history = user_3.readlines()
 
+                        for item in list(set(user1_history) & set(user2_history)):
+                            if item not in user3_history:
+                                print(item)
+        except:
+            return None
 
     def run_content_filter_algo(self):
         genres = {}
