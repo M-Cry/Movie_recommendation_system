@@ -11,10 +11,13 @@ history = movies.get_history()
 
 @eel.expose
 def run_collabrative_filter_algo():
-    global is_content_based, collabrative
+    global is_content_based, collabrative, movies
     data = collabrative.filter()
+    result = []
+    result.append(movies.get_movies_with_posters(data))
+
     is_content_based = False 
-    return data
+    return result
 
 @eel.expose
 def run_content_filter_algo():
@@ -26,7 +29,6 @@ def run_content_filter_algo():
 
     # Get the num of movies to be recommended
     recommended_movies = []
-
     for genre, num in recomendation_info.items():
         m = movies.get_top_movies_by_genre(genre, num)
         recommended_movies.append(m)

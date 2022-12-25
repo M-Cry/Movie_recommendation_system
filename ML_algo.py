@@ -17,6 +17,7 @@ class Db:
         self.graph = None
         self.graph_name = ""
         self.history_file = "user_history.txt"
+        self.db_name = "movies.csv"
 
     def get_graph(self):
         try:
@@ -77,8 +78,20 @@ class Collabrative(Db):
             corr_aliens = corr_aliens.join(ratings['number_of_ratings'])
             recommendations = corr_aliens[corr_aliens['number_of_ratings'] > 3].sort_values(by='Correlation', ascending=False).head()
 
-            return [movie_title[0] for movie_title in recommendations.iterrows()] 
+            # get recommendations info
+            file = pd.read_csv(self.db_name, sep=",")
+            movie_info = []
 
+            for movie_title in [movie_title[0] for movie_title in recommendations.iterrows()]:
+                row = file[file.eq(movie_title)["title"]].to_string(header=False,index=True,index_names=False).split('\n')
+                movie_info.append(int(row[0].split()[0]) +1)
+                
+            with open(self.db_name) as file:
+                lines = file.readlines()
+                for index, movie_pos in enumerate(movie_info):
+                    movie_info[index] = lines[movie_pos].strip().split(",")
+            return movie_info
+            
         except Exception as e:
             print(str(e))
             return None
@@ -90,6 +103,8 @@ class ContentBased(Db):
         self.num_mov_to_generate = 9
         self.elimination_threshold = 0.12
         self.graph = None
+        self.graph_name = "cont.jpg"
+
         self.statistics = {
             'Step 1': [],
             'Step 2': [],
@@ -137,18 +152,18 @@ class ContentBased(Db):
         if mov_left > 0:
             result[highest_watched[0]] += mov_left
         self.recomendation_info = result
-        
 
-        _, ax = plt.subplots()
+        # Generate graph 
+        with open("history_by_genre.csv", "w+") as file:
+            writer = csv.writer(file, lineterminator="\n")
+            writer.writerow(["Movie Genre","Total Watched"])
+            writer.writerows(list(zip(self.total_genre_watched.keys(), self.total_genre_watched.values())))
 
-        bar_colors = ['tab:red', 'tab:blue', 'tab:green', 'tab:orange']
-        x_axis = self.total_genre_watched.keys() 
-        ax.bar(x_axis, self.total_genre_watched.values(), label = x_axis, color = bar_colors)
-        ax.set_ylabel('NO. of movies watched')
-        ax.set_title(f'User Watch history as ({datetime.datetime.now()})')
-        ax.legend(title='Genre')
-
+        data = pd.read_csv("history_by_genre.csv", sep=",")
+            
+        sns.barplot(data=data, x="Movie Genre", y="Total Watched")
         self.graph = plt
+        
         return self.recomendation_info
 
     def get_statistics(self) -> None:
@@ -167,7 +182,7 @@ class ContentBased(Db):
             ax.invert_yaxis()
             ax.xaxis.set_visible(False)
             ax.set_xlim(0, np.sum(data, axis=1).max())
-
+  
             for i, (colname, color) in enumerate(zip(category_names, category_colors)):
                 widths = data[:, i]
                 starts = data_cum[:, i] - widths
@@ -181,7 +196,7 @@ class ContentBased(Db):
             ax.legend(ncol=len(category_names), bbox_to_anchor=(0, 1),
                     loc='lower left', fontsize='small')
 
-            self.graph = plt
+            plt.show()
         else:
             return None
 
@@ -195,13 +210,12 @@ class Movie(Db):
         self.api_key = "bff8376d6367c86f36682ec21870f938"
         self.api = self.api_url + self.api_key
         
-        self.posters = []
         self.top_movies = []
 
     def get_top_movies_by_genre(self, genre, recomendation_num):
         rec_movies = []
 
-        with open("movies.csv", encoding="utf-8") as data:
+        with open(self.db_name, encoding="utf-8") as data:
             header = dict(enumerate(data.readline().split(",")))    # {0: 'title', ...}
             header = {value:key for key, value in header.items()}   # {'title': 0, ...}
             self.header = header
@@ -213,13 +227,17 @@ class Movie(Db):
             # first 9 movies by slicing the list
             self.top_movies = sorted(rec_movies, key = lambda x: x[self.header["rating"]], reverse = True)[ : recomendation_num]
 
+        return self.get_movies_with_posters(self.top_movies)
+
+    def get_movies_with_posters(self, movies):
         """
         ##################################################################
         #####   Fetch movie posters from API if server returns OK status
         ##################################################################
         """
-        for movie in self.top_movies:
-            self.posters.append("test")
+        posters = []
+        for movie in movies:
+            posters.append("test")
         #     movie_title = movie[self.headers["title"]]
         #     query = f"https://api.themoviedb.org/3/search/movie?api_key=bff8376d6367c86f36682ec21870f938&query={movie_title.replace(' ', '%20')}&page=1"
         #     respond = rq.get(query)
@@ -234,7 +252,7 @@ class Movie(Db):
         #         self.posters.append(poster)
         #     else:
         #         self.posters.append("Server Error")
-        return list(zip(self.top_movies, self.posters))
+        return list(zip(movies, posters))
 
     def watch(self, movie_info):
         with open(self.history_file, "a") as file:
