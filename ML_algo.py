@@ -26,6 +26,15 @@ class Db:
         except:
             self.graph.savefig(self.graph_name)
             self.graph.show()
+
+    def history(self) -> dict:
+        try:
+            with open(self.history_file) as file:
+                lines = file.readlines()
+                return lines
+        except FileNotFoundError:
+            # No movies has been watched yet
+            return "NONE"     
             
 class Collabrative(Db):
     def __init__(self) -> None:
@@ -75,38 +84,48 @@ class Collabrative(Db):
             return None
 
 class ContentBased(Db):
-    def __init__(self, mov_watched:dict) -> None:
+    def __init__(self) -> None:
         super().__init__()
 
-        self.mov_watched = mov_watched  # {"Action" : 2, ...
         self.num_mov_to_generate = 9
-        self.genres = mov_watched.keys()
-        self.watch_time = mov_watched.values()
+        self.elimination_threshold = 0.12
         self.graph = None
-
         self.statistics = {
             'Step 1': [],
             'Step 2': [],
             'Step 3': []
         }
-
         self.recomendation_info = {}
 
     def filter(self) -> dict:
-        total_mov = sum(self.mov_watched.values())
+        self.total_genre_watched = {}
+        try:
+            with open(self.history_file) as file:
+                movies = file.readlines()
+                for movie in movies:
+                    movie = movie.split(",")
+                    if movie[1] in self.total_genre_watched:
+                        self.total_genre_watched[movie[1]] += 1
+                    else:
+                        self.total_genre_watched[movie[1]] = 1
+        except FileNotFoundError:
+            return None
+
+        total_mov = sum(self.total_genre_watched.values())
         result = {}
 
         mov_left = self.num_mov_to_generate
         highest_watched = ["", 0]
-        for genre, num_watched in self.mov_watched.items():
+        for genre, num_watched in self.total_genre_watched.items():
             num = num_watched / total_mov
             rounded_num = round(num, 2)
             self.statistics["Step 1"].append(rounded_num)
 
-            if rounded_num <= 0.12:
+            if rounded_num <= self.elimination_threshold:
                 x = 0
             else:
-                x = int(round(num, 2) * self.num_mov_to_generate)
+                x = int(rounded_num * self.num_mov_to_generate)
+
             result[genre] = x
             self.statistics["Step 2"].append(x)
             
@@ -117,37 +136,26 @@ class ContentBased(Db):
 
         if mov_left > 0:
             result[highest_watched[0]] += mov_left
-        
         self.recomendation_info = result
-
-        genres = {}
-        try:
-            with open(self.history_file) as file:
-                movies = file.readlines()
-                for movie in movies:
-                    movie = movie.split(",")
-                    if movie[1] in genres:
-                        genres[movie[1]] += 1
-                    else:
-                        genres[movie[1]] = 1
-        except FileNotFoundError:
-            pass
+        
 
         _, ax = plt.subplots()
 
         bar_colors = ['tab:red', 'tab:blue', 'tab:green', 'tab:orange']
-        ax.bar(self.genres, self.watch_time, label = self.genres, color = bar_colors)
+        x_axis = self.total_genre_watched.keys() 
+        ax.bar(x_axis, self.total_genre_watched.values(), label = x_axis, color = bar_colors)
         ax.set_ylabel('NO. of movies watched')
         ax.set_title(f'User Watch history as ({datetime.datetime.now()})')
         ax.legend(title='Genre')
 
         self.graph = plt
+        return self.recomendation_info
 
     def get_statistics(self) -> None:
-        if len(self.mov_watched) > 0:
+        if len(self.total_genre_watched) > 0:
             
             self.statistics["Step 3"] = [x for x in self.recomendation_info.values()]
-            category_names = self.mov_watched
+            category_names = self.total_genre_watched
 
             labels = list(self.statistics.keys())
             data = np.array(list(self.statistics.values()))
@@ -180,7 +188,7 @@ class ContentBased(Db):
 class Movie(Db):
     def __init__(self) -> None:
         super().__init__()
-        
+
         self.header = {}
         
         self.api_url = "https://api.themoviedb.org/3/movie/550?api_key="
@@ -190,7 +198,7 @@ class Movie(Db):
         self.posters = []
         self.top_movies = []
 
-    def get_top_movies_by_genre(self, genre: str) -> list:
+    def get_top_movies_by_genre(self, genre, recomendation_num):
         rec_movies = []
 
         with open("movies.csv", encoding="utf-8") as data:
@@ -203,15 +211,15 @@ class Movie(Db):
 
             # sorted => TimSort Algo. | O(n*log(n))
             # first 9 movies by slicing the list
-            self.top_movies = sorted(rec_movies, key = lambda x: x[self.header["rating"]], reverse = True)[ : 9]
+            self.top_movies = sorted(rec_movies, key = lambda x: x[self.header["rating"]], reverse = True)[ : recomendation_num]
 
         """
         ##################################################################
         #####   Fetch movie posters from API if server returns OK status
         ##################################################################
         """
-        # for movie in self.top_movies:
-        #     # self.posters.append("test")
+        for movie in self.top_movies:
+            self.posters.append("test")
         #     movie_title = movie[self.headers["title"]]
         #     query = f"https://api.themoviedb.org/3/search/movie?api_key=bff8376d6367c86f36682ec21870f938&query={movie_title.replace(' ', '%20')}&page=1"
         #     respond = rq.get(query)
@@ -226,12 +234,12 @@ class Movie(Db):
         #         self.posters.append(poster)
         #     else:
         #         self.posters.append("Server Error")
-            
-    def get_movies_with_posters(self):
-        self.get_top_movies_by_genre()
         return list(zip(self.top_movies, self.posters))
 
     def watch(self, movie_info):
         with open(self.history_file, "a") as file:
             file.write(movie_info + "\n")
         return movie_info.split(",")[:2]
+
+    def get_history(self):
+        return self.history()

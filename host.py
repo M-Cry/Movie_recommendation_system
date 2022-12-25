@@ -2,11 +2,12 @@ import eel
 import ML_algo as algo
 eel.init('UI')
 
-history = {}
 is_content_based = True # Default algo content-based
 collabrative = algo.Collabrative()
-content_based = algo.ContentBased(history)
+content_based = algo.ContentBased()
 movies = algo.Movie()
+
+history = movies.get_history()
 
 @eel.expose
 def run_collabrative_filter_algo():
@@ -18,30 +19,27 @@ def run_collabrative_filter_algo():
 @eel.expose
 def run_content_filter_algo():
     global history, is_content_based, content_based, movies
-    data = content_based
-
-    if len(data) == 0:
+    if len(history) == 0:
         return "NONE"
-    history = data
+
+    recomendation_info = content_based.filter()
 
     # Get the num of movies to be recommended
-    data = algo.History(history)
-    recomendation_info = data.get_num_of_recommended_movies()
+    recommended_movies = []
 
-    # Generate movies from class Movie by using the data from the num of movies recommeded
-    movies = []
     for genre, num in recomendation_info.items():
-        movie = algo.Movie("genre", genre, num).get_movies_with_posters()
-        movies.append(movie)
-        print(movie)
+        m = movies.get_top_movies_by_genre(genre, num)
+        recommended_movies.append(m)
 
     is_content_based = True
-    return movies
+    return recommended_movies
     
 @eel.expose
 def movie_watched(movie_info):
-    global movies
-    return movies.watch(movie_info)
+    global movies, history
+    movie = movies.watch(movie_info)
+    history = movies.get_history()
+    return movie
     
 @eel.expose
 def get_graph():
