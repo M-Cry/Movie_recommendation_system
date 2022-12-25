@@ -1,10 +1,3 @@
-async function set_user(){
-	const selectElement = document.getElementById("standard-select");
-    const user = selectElement.options[selectElement.selectedIndex].value;
-
-    await eel.set_user(user)();
-}
-
 async function record_movie(elm){
     movie_data = document.getElementById(elm).innerText
     let data = await eel.movie_watched(movie_data)(); // Pass data to localhost
@@ -12,27 +5,14 @@ async function record_movie(elm){
 }
 
 async function run_collabrative_filter_algo() {
-    const user_selector = document.getElementById("standard-select").options;
-    const selected_user = user_selector[user_selector.selectedIndex].value;
-    let all_users = [];
-    
-    // get the list of all users and store in all_users
-    for (const key in user_selector) {
-        try {
-            current_value = user_selector[key].text
-            if (current_value != selected_user && current_value != null){
-                console.log(current_value);
-                all_users.push(current_value);
-            }
-        } catch (error) {
-            console.log("");
-        }
+    let signal = await eel.run_collabrative_filter_algo()();
+    if (signal == "NONE"){
+        swal("Ops!", "Python returned none", "error");
+        return
     }
-    
-    // creates a custom alert pop up
-    swal("We did it", "I'm working on it", "success");
 
-    await eel.run_collabrative_filter_algo(all_users)();
+    swal("Successfull !", "Movies generated", "success");
+    console.log(signal)
 }
 
 async function run_content_filter_algo() {

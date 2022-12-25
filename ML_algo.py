@@ -1,125 +1,88 @@
 import csv
+import cv2
 import datetime
 import numpy as np
+import pandas as pd
+import seaborn as sns
 import requests as rq
 import matplotlib.pyplot as plt
+
 """
     Machine learning algo. -> Supervised Learning (data = user watch history)
     By GUtech students
     
 """
 class Db:
-    def __init__(self, user) -> None:
-        self.user = user
-        self.history_file = f"{user} history.txt"
+    def __init__(self) -> None:
+        self.graph = None
+        self.graph_name = ""
+        self.history_file = "user_history.txt"
 
-    def movie_watched(self, movie_info):
-        with open(self.history_file, "a") as file:
-            file.write(movie_info + "\n")
-        return movie_info.split(",")[:2]
+    def get_graph(self):
+        try:
+            cv2.imshow("Collabrative filtering", cv2.imread(self.graph_name))
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+        except:
+            self.graph.savefig(self.graph_name)
+            self.graph.show()
+            
+class Collabrative(Db):
+    def __init__(self) -> None:
+        super().__init__()
+        self.graph_name = "col_fig.jpg"
 
-    def run_collabrative_filter_algo(self, users):
+    def filter(self):
         """
             Collabrative filtering algorithm implementation
         """
-
         try:
-            with open(f'{self.user} history.txt') as user_1:
-                with open(f'{users[0]} history.txt') as user_2:
-                    with open(f'{users[1]} history.txt') as user_3:
-                        user1_history = user_1.readlines()
-                        user2_history = user_2.readlines()
-                        user3_history = user_3.readlines()
+            df = pd.read_csv('user_rating.csv', sep=',')
 
-                        for item in list(set(user1_history) & set(user2_history)):
-                            if item not in user3_history:
-                                print(item)
-        except:
+            ratings = pd.DataFrame(df.groupby('title')['user_rating'].mean())
+
+            # get how many times a title has been rated
+            ratings['number_of_ratings'] = df.groupby('title')['user_rating'].count()
+
+            # plotting the joinplot to show the distribution of ratings and most ratring scores
+            sns.jointplot(x = 'user_rating', y = 'number_of_ratings', data = ratings)
+            self.graph = plt
+            data_matrix = df.pivot_table(index='user_id', columns='title', values='user_rating')
+
+            # most rated movies list
+            ratings.sort_values('user_rating', ascending=False).head(10)
+
+            np.seterr(divide='ignore', invalid='ignore')
+
+            aliens_user_ratings = data_matrix['Aliens in the Attic']
+
+            # find similar movies to (Aliens in the Attic) using correlation with other movies ratings
+            similar_to_aliens = data_matrix.corrwith(aliens_user_ratings)
+
+            # better display the recommendations
+            corr_aliens = pd.DataFrame(similar_to_aliens, columns = ['Correlation'])
+            corr_aliens.dropna(inplace=True)
+            corr_aliens.sort_values('Correlation', ascending=False).head()
+
+            # set up to refine the recommendations
+            corr_aliens = corr_aliens.join(ratings['number_of_ratings'])
+            recommendations = corr_aliens[corr_aliens['number_of_ratings'] > 3].sort_values(by='Correlation', ascending=False).head()
+
+            return [movie_title[0] for movie_title in recommendations.iterrows()] 
+
+        except Exception as e:
+            print(str(e))
             return None
 
-    def run_content_filter_algo(self):
-        genres = {}
-        try:
-            with open(self.history_file) as file:
-                movies = file.readlines()
-                for movie in movies:
-                    movie = movie.split(",")
-                    if movie[1] in genres:
-                        genres[movie[1]] += 1
-                    else:
-                        genres[movie[1]] = 1
-        except FileNotFoundError:
-            pass
-        return genres
-
-class Movie:
-    def __init__(self, rec_type: str, rec: str, rec_num: int) -> None:
-        self.headers = {}
-
-        self.rec = rec              # rec = Recommended genre
-        self.rec_num = rec_num      # rec_num = Number of movies to recommend
-        self.rec_type = rec_type    # rec_type = Recommendation type i.e. genre, release date, rating ...
-        
-        self.api_url = "https://api.themoviedb.org/3/movie/550?api_key="
-        self.api_key = "bff8376d6367c86f36682ec21870f938"
-        self.api = self.api_url + self.api_key
-        
-        self.posters = []
-        self.top_movies = []
-
-    def get_top_movies_by_genre(self) -> list:
-        """
-        ##############################################################
-        #####   Get movies specified in __init__ func
-        ##############################################################
-        """
-        rec_movies = []
-
-        with open("movies.csv", encoding="utf-8") as data:
-            headers = dict(enumerate(data.readline().split(",")))       #{0: 'title', ...}
-            headers = {value:key for key, value in headers.items()}     #{'title': 0, ...}
-            self.headers = headers
-
-            movies = csv.reader(data)
-            for movie in movies:
-                if self.rec in movie[self.headers[self.rec_type]]:
-                    rec_movies.append(movie)
-
-            # sorted => TimSort Algo. | O(n*log(n))
-            self.top_movies = sorted(rec_movies, key = lambda x: x[self.headers["rating"]], reverse = True)[ : self.rec_num]
-
-        """
-        ##################################################################
-        #####   Fetch movie posters from API if server returns OK status
-        ##################################################################
-        """
-        for movie in self.top_movies:
-            # self.posters.append("test")
-            movie_title = movie[self.headers["title"]]
-            query = f"https://api.themoviedb.org/3/search/movie?api_key=bff8376d6367c86f36682ec21870f938&query={movie_title.replace(' ', '%20')}&page=1"
-            respond = rq.get(query)
-            
-            if respond.status_code == 200: # Connection established
-                json = respond.text 
-                start_index = '"poster_path":"/'
-                end_index = '","release_date":"'
-                
-                poster_path = json[ json.find(start_index) + len(start_index) : json.find(end_index) ]
-                poster = f'https://image.tmdb.org/t/p/w500/{poster_path}'
-                self.posters.append(poster)
-            else:
-                self.posters.append("Server Error")
-            
-    def get_movies_with_posters(self):
-        self.get_top_movies_by_genre()
-        return list(zip(self.top_movies, self.posters))
-
-class History:
+class ContentBased(Db):
     def __init__(self, mov_watched:dict) -> None:
+        super().__init__()
+
         self.mov_watched = mov_watched  # {"Action" : 2, ...
         self.num_mov_to_generate = 9
         self.genres = mov_watched.keys()
         self.watch_time = mov_watched.values()
+        self.graph = None
 
         self.statistics = {
             'Step 1': [],
@@ -128,9 +91,8 @@ class History:
         }
 
         self.recomendation_info = {}
-        self.generate_recomendation_info()
 
-    def generate_recomendation_info(self) -> dict:
+    def filter(self) -> dict:
         total_mov = sum(self.mov_watched.values())
         result = {}
 
@@ -158,7 +120,19 @@ class History:
         
         self.recomendation_info = result
 
-    def get_graph(self) -> None:
+        genres = {}
+        try:
+            with open(self.history_file) as file:
+                movies = file.readlines()
+                for movie in movies:
+                    movie = movie.split(",")
+                    if movie[1] in genres:
+                        genres[movie[1]] += 1
+                    else:
+                        genres[movie[1]] = 1
+        except FileNotFoundError:
+            pass
+
         _, ax = plt.subplots()
 
         bar_colors = ['tab:red', 'tab:blue', 'tab:green', 'tab:orange']
@@ -167,9 +141,9 @@ class History:
         ax.set_title(f'User Watch history as ({datetime.datetime.now()})')
         ax.legend(title='Genre')
 
-        plt.show() 
+        self.graph = plt
 
-    def get_statistics(self):
+    def get_statistics(self) -> None:
         if len(self.mov_watched) > 0:
             
             self.statistics["Step 3"] = [x for x in self.recomendation_info.values()]
@@ -199,7 +173,65 @@ class History:
             ax.legend(ncol=len(category_names), bbox_to_anchor=(0, 1),
                     loc='lower left', fontsize='small')
 
-            plt.show()
+            self.graph = plt
+        else:
+            return None
 
-    def get_num_of_recommended_movies(self):
-        return self.recomendation_info
+class Movie(Db):
+    def __init__(self) -> None:
+        super().__init__()
+        
+        self.header = {}
+        
+        self.api_url = "https://api.themoviedb.org/3/movie/550?api_key="
+        self.api_key = "bff8376d6367c86f36682ec21870f938"
+        self.api = self.api_url + self.api_key
+        
+        self.posters = []
+        self.top_movies = []
+
+    def get_top_movies_by_genre(self, genre: str) -> list:
+        rec_movies = []
+
+        with open("movies.csv", encoding="utf-8") as data:
+            header = dict(enumerate(data.readline().split(",")))    # {0: 'title', ...}
+            header = {value:key for key, value in header.items()}   # {'title': 0, ...}
+            self.header = header
+
+            movies = csv.reader(data)
+            rec_movies = [movie for movie in movies if genre in movie[self.header["genre"]]]
+
+            # sorted => TimSort Algo. | O(n*log(n))
+            # first 9 movies by slicing the list
+            self.top_movies = sorted(rec_movies, key = lambda x: x[self.header["rating"]], reverse = True)[ : 9]
+
+        """
+        ##################################################################
+        #####   Fetch movie posters from API if server returns OK status
+        ##################################################################
+        """
+        # for movie in self.top_movies:
+        #     # self.posters.append("test")
+        #     movie_title = movie[self.headers["title"]]
+        #     query = f"https://api.themoviedb.org/3/search/movie?api_key=bff8376d6367c86f36682ec21870f938&query={movie_title.replace(' ', '%20')}&page=1"
+        #     respond = rq.get(query)
+            
+        #     if respond.status_code == 200: # Connection established
+        #         json = respond.text 
+        #         start_index = '"poster_path":"/'
+        #         end_index = '","release_date":"'
+                
+        #         poster_path = json[ json.find(start_index) + len(start_index) : json.find(end_index) ]
+        #         poster = f'https://image.tmdb.org/t/p/w500/{poster_path}'
+        #         self.posters.append(poster)
+        #     else:
+        #         self.posters.append("Server Error")
+            
+    def get_movies_with_posters(self):
+        self.get_top_movies_by_genre()
+        return list(zip(self.top_movies, self.posters))
+
+    def watch(self, movie_info):
+        with open(self.history_file, "a") as file:
+            file.write(movie_info + "\n")
+        return movie_info.split(",")[:2]

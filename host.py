@@ -3,20 +3,22 @@ import ML_algo as algo
 eel.init('UI')
 
 history = {}
-current_user = ""
+is_content_based = True # Default algo content-based
+collabrative = algo.Collabrative()
+content_based = algo.ContentBased(history)
+movies = algo.Movie()
 
 @eel.expose
-def run_collabrative_filter_algo(users):
-    global current_user
-    obj = algo.Db(current_user)
-    data = obj.run_collabrative_filter_algo(users)
+def run_collabrative_filter_algo():
+    global is_content_based, collabrative
+    data = collabrative.filter()
+    is_content_based = False 
     return data
 
 @eel.expose
 def run_content_filter_algo():
-    global history, current_user
-    obj = algo.Db(current_user)
-    data = obj.run_content_filter_algo()
+    global history, is_content_based, content_based, movies
+    data = content_based
 
     if len(data) == 0:
         return "NONE"
@@ -32,33 +34,30 @@ def run_content_filter_algo():
         movie = algo.Movie("genre", genre, num).get_movies_with_posters()
         movies.append(movie)
         print(movie)
+
+    is_content_based = True
     return movies
     
 @eel.expose
-def set_user(user):
-    global current_user
-    current_user = user
+def movie_watched(movie_info):
+    global movies
+    return movies.watch(movie_info)
     
 @eel.expose
 def get_graph():
-    global history
-    obj = algo.History(history)
-    if len(history) == 0:
-        return "NONE"
-    return obj.get_graph()
+    """ Get latest graph generated"""
+    global content_based, is_content_based, collabrative
+
+    if is_content_based:
+        return content_based.get_graph()
+    return collabrative.get_graph()
 
 @eel.expose
 def get_statistics():
-    global history
-    obj = algo.History(history)
+    global history, content_based
+
     if len(history) == 0:
         return "NONE"
-    return obj.get_statistics()
-
-@eel.expose
-def movie_watched(movie_info):
-    global current_user
-    obj = algo.Db(current_user)
-    return obj.movie_watched(movie_info)
+    return content_based.get_statistics()
 
 eel.start('home.html', port=9764, host='localhost',  mode='chrome', size=(1920, 1080))
