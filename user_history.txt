@@ -1,7 +1,0 @@
-Red State,Horror,57,59,4,2011
-The Eye,Horror,22,51,12,2008
-Saw IV,Horror,18,70,10,2007
-Fast Five,Action,78,83,125,2011
-Fast Five,Action,78,83,125,2011
-Fast Five,Action,78,83,125,2011
-The Eye,Horror,22,51,12,2008

@@ -1,27 +1,26 @@
 import csv
 import cv2
+import os
 import datetime
 import numpy as np
 import pandas as pd
 import seaborn as sns
-import requests as rq
 import matplotlib.pyplot as plt
 
 """
-    Machine learning algo. -> Supervised Learning (data = user watch history)
+    Machine learning Engine 
     By GUtech students
-    
 """
+
 class Db:
     def __init__(self) -> None:
-        self.graph = None
-        self.graph_name = ""
+        self.graph_name = "generated graphs"
         self.history_file = "user_history.txt"
         self.db_name = "movies.csv"
 
     def get_graph(self):
         try:
-            cv2.imshow("Collabrative filtering", cv2.imread(self.graph_name))
+            cv2.imshow("Generated Graph", cv2.imread(self.graph_name))
             cv2.waitKey(0)
             cv2.destroyAllWindows()
         except:
@@ -34,13 +33,20 @@ class Db:
                 lines = file.readlines()
                 return lines
         except FileNotFoundError:
-            # No movies has been watched yet
-            return "NONE"     
+            # No movies has been watched
+            return None     
             
+    def rmv_old_graph(self, src):
+        try:
+            os.rename(src, f"generated graphs/old_{datetime.datetime.now().timestamp()}.jpg")
+        except:
+            pass
+
 class Collabrative(Db):
     def __init__(self) -> None:
         super().__init__()
-        self.graph_name = "col_fig.jpg"
+        self.graph = None
+        self.graph_name = "generated graphs/col_fig.jpg"
 
     def filter(self):
         """
@@ -57,13 +63,13 @@ class Collabrative(Db):
             # plotting the joinplot to show the distribution of ratings and most ratring scores
             sns.jointplot(x = 'user_rating', y = 'number_of_ratings', data = ratings)
             self.graph = plt
+
             data_matrix = df.pivot_table(index='user_id', columns='title', values='user_rating')
 
             # most rated movies list
             ratings.sort_values('user_rating', ascending=False).head(10)
 
             np.seterr(divide='ignore', invalid='ignore')
-
             aliens_user_ratings = data_matrix['Aliens in the Attic']
 
             # find similar movies to (Aliens in the Attic) using correlation with other movies ratings
@@ -82,6 +88,7 @@ class Collabrative(Db):
             file = pd.read_csv(self.db_name, sep=",")
             movie_info = []
 
+            # Get movie info from dataset via the movie title
             for movie_title in [movie_title[0] for movie_title in recommendations.iterrows()]:
                 row = file[file.eq(movie_title)["title"]].to_string(header=False,index=True,index_names=False).split('\n')
                 movie_info.append(int(row[0].split()[0]) +1)
@@ -90,6 +97,8 @@ class Collabrative(Db):
                 lines = file.readlines()
                 for index, movie_pos in enumerate(movie_info):
                     movie_info[index] = lines[movie_pos].strip().split(",")
+            
+            self.rmv_old_graph(self.graph_name)
             return movie_info
             
         except Exception as e:
@@ -101,9 +110,9 @@ class ContentBased(Db):
         super().__init__()
 
         self.num_mov_to_generate = 9
-        self.elimination_threshold = 0.12
+        self.elimination_threshold = 0.13
         self.graph = None
-        self.graph_name = "cont.jpg"
+        self.graph_name = "generated graphs/cont.jpg"
 
         self.statistics = {
             'Step 1': [],
@@ -164,6 +173,8 @@ class ContentBased(Db):
         sns.barplot(data=data, x="Movie Genre", y="Total Watched")
         self.graph = plt
         
+        self.rmv_old_graph(self.graph_name)
+
         return self.recomendation_info
 
     def get_statistics(self) -> None:
@@ -171,13 +182,13 @@ class ContentBased(Db):
             
             self.statistics["Step 3"] = [x for x in self.recomendation_info.values()]
             category_names = self.total_genre_watched
-
             labels = list(self.statistics.keys())
+
             data = np.array(list(self.statistics.values()))
             data_cum = data.cumsum(axis=1)
             category_colors = plt.colormaps['RdYlGn'](
                 np.linspace(0.15, 0.85, data.shape[1]))
-
+      
             _, ax = plt.subplots()
             ax.invert_yaxis()
             ax.xaxis.set_visible(False)
@@ -205,12 +216,8 @@ class Movie(Db):
         super().__init__()
 
         self.header = {}
-        
-        self.api_url = "https://api.themoviedb.org/3/movie/550?api_key="
-        self.api_key = "bff8376d6367c86f36682ec21870f938"
-        self.api = self.api_url + self.api_key
-        
         self.top_movies = []
+        self.posts = pd.read_csv("movies_posters.csv")
 
     def get_top_movies_by_genre(self, genre, recomendation_num):
         rec_movies = []
@@ -230,28 +237,12 @@ class Movie(Db):
         return self.get_movies_with_posters(self.top_movies)
 
     def get_movies_with_posters(self, movies):
-        """
-        ##################################################################
-        #####   Fetch movie posters from API if server returns OK status
-        ##################################################################
-        """
+        """ Fetch movie post """
         posters = []
-        for movie in movies:
-            posters.append("test")
-        #     movie_title = movie[self.headers["title"]]
-        #     query = f"https://api.themoviedb.org/3/search/movie?api_key=bff8376d6367c86f36682ec21870f938&query={movie_title.replace(' ', '%20')}&page=1"
-        #     respond = rq.get(query)
-            
-        #     if respond.status_code == 200: # Connection established
-        #         json = respond.text 
-        #         start_index = '"poster_path":"/'
-        #         end_index = '","release_date":"'
-                
-        #         poster_path = json[ json.find(start_index) + len(start_index) : json.find(end_index) ]
-        #         poster = f'https://image.tmdb.org/t/p/w500/{poster_path}'
-        #         self.posters.append(poster)
-        #     else:
-        #         self.posters.append("Server Error")
+        for movie_data in movies:
+            data = self.posts[self.posts['title'] == movie_data[0]]
+            posters.append(data.values[0][1])
+
         return list(zip(movies, posters))
 
     def watch(self, movie_info):

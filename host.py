@@ -12,6 +12,8 @@ history = movies.get_history()
 @eel.expose
 def run_collabrative_filter_algo():
     global is_content_based, collabrative, movies
+
+    collabrative = algo.Collabrative()
     data = collabrative.filter()
     result = []
     result.append(movies.get_movies_with_posters(data))
@@ -22,9 +24,10 @@ def run_collabrative_filter_algo():
 @eel.expose
 def run_content_filter_algo():
     global history, is_content_based, content_based, movies
-    if len(history) == 0:
-        return "NONE"
+    if history == None or len(history) == 0:
+        return None
 
+    content_based = algo.ContentBased() # overwrite object
     recomendation_info = content_based.filter()
 
     # Get the num of movies to be recommended
@@ -45,10 +48,11 @@ def movie_watched(movie_info):
     
 @eel.expose
 def get_graph():
-    """ Get latest graph generated"""
-    global content_based, is_content_based, collabrative
-
+    global content_based, is_content_based, collabrative, history      
     if is_content_based:
+        history = movies.get_history()
+        if history == None or len(history) == 0:
+            return None, is_content_based
         return content_based.get_graph()
     return collabrative.get_graph()
 
@@ -56,8 +60,6 @@ def get_graph():
 def get_statistics():
     global history, content_based
 
-    if len(history) == 0:
-        return "NONE"
     return content_based.get_statistics()
 
 eel.start('home.html', port=9764, host='localhost',  mode='chrome', size=(1920, 1080))
