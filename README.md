@@ -1,13 +1,16 @@
 # Movie recommendation system
 ## _To do list_
-- [ ] Collabrative-based filtering algo. implementation:
-    - The Algorithm to handle this filtering technique
-
-- [ ] Prototype for the collabrative filtering for testing:
-    - Add a dropdown list in the HTML for user simulation [user1, user2]
-    - Add a button to run the algo. and generate the recommended movies
+- *ALL DONE! 😁* 
 
 ### _Completed tasks_
+- [x] Change UI according to the recommended movies:
+    - [x] Content-based
+    - [x] Collabrative 
+- [x] Collabrative-based filtering algo. implementation:
+    - The Algorithm to handle this filtering technique
+- [x] Prototype for the collabrative filtering for testing:
+    - Add a dropdown list in the HTML for user simulation [user1, user2]
+    - Add a button to run the algo. and generate the recommended movies
 - [x] Content-based filtering
 - [x] Prototype for the content filtering for testing
 - [x] System simulation

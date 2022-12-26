@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
   <meta name="description" content="Movie recommendation system ML based engine">
-  <title>Movie recommendation system ML based engine</title>
+  <title>Movie recommendation system (Intro to AI project)</title>
   <link rel="stylesheet" href="css/design.css" media="screen">
   <link rel="stylesheet" href="css/Home.css" media="screen">
   <script class="u-script" type="text/javascript" src="js/jquery.js" defer=""></script>
@@ -18,8 +18,8 @@
   <link id="u-page-google-font" rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700|Roboto+Slab:100,200,300,400,500,600,700,800,900">
   <script type="application/ld+json">{
-		"@context": "http://schema.org",
-		"@type": "Organization",
+		"@context": "AhmedRiyami Account",
+		"@type": "GUtech Project",
 		"name": "movie recommendation system"}
     </script>
   <meta name="theme-color" content="#1847b8">
@@ -65,144 +65,39 @@
             class="u-align-center u-container-style u-list-item u-radius-20 u-repeater-item u-shape-round u-video-cover u-white u-list-item-3">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3"><span
                 class="u-file-icon u-icon u-icon-3"><img src="img/2377746.png" alt=""></span>
-              <a onclick="run_algo()"
-                class="u-btn u-btn-round u-button-style u-hover-feature u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-3">Run
-                Algo.</a>
+              <a onclick="run_content_filter_algo()"
+                class="u-btn u-btn-round u-button-style u-hover-feature u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-3">Content-based</a>
             </div>
           </div>
           <div
             class="u-align-center u-container-style u-list-item u-radius-20 u-repeater-item u-shape-round u-video-cover u-white u-list-item-4">
             <div class="u-container-layout u-similar-container u-valign-top u-container-layout-4"><span
-                class="u-file-icon u-icon u-icon-4"><img src="img/2340249.png" alt=""></span>
-              <a onclick="get_history()"
-                class="u-btn u-btn-round u-button-style u-hover-feature u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-4">History</a>
+                class="u-file-icon u-icon u-icon-4"><img src="img/2377746.png" alt=""></span>
+              <a onclick="run_collabrative_filter_algo()"
+                class="u-btn u-btn-round u-button-style u-hover-feature u-hover-palette-1-light-1 u-palette-1-base u-radius-6 u-btn-4">Collabrative</a>
             </div>
           </div>
         </div>
+
+        <!-- <div style="margin: 20px;">
+          <label for="standard-select" id="pick-user-label">Currnt User</label>
+          <div class="select">
+            <select id="standard-select" onchange="set_user()">
+              <option value="Ahmed" selected>Ahmed</option>
+              <option value="Nasser">Nasser</option>
+              <option value="Mohammed">Mohammed</option>
+            </select>
+          </div>
+        </div> -->
+
       </div>
       <p class="u-align-center u-text u-text-body-alt-color u-text-2">Ahmed AL Riyami
-        (18-0155)<br>Mohammed Al Ismaeli (19-)&nbsp;<br>Nasser Al Wahibi (17-0026)
+        (18-0155)<br>Mohammed Al Ismaili (19-0659)<br>Nasser Al Wahibi (17-0026)
       </p>
     </div>
 
+  </section>
 
-  </section>
-  <section
-    class="u-align-center-lg u-align-center-md u-align-center-xl u-align-left-sm u-align-left-xs u-clearfix u-grey-5 u-section-2"
-    id="carousel_e8ef">
-    <div class="u-clearfix u-image u-image-contain u-image-default u-sheet u-image-1" id="" data-image-width="3865"
-      data-image-height="1745">
-      <h2 class="u-text u-text-palette-2-base u-text-1">Content-based Filtering</h2>
-    </div>
-  </section>
-  <section class="u-clearfix u-section-3" id="carousel_fd61">
-    <div class="u-clearfix u-sheet u-sheet-1">
-      <div class="u-clearfix u-expanded-width u-layout-wrap u-layout-wrap-1">
-        <div class="u-layout">
-          <div class="u-layout-row">
-            <div class="u-align-left u-container-style u-layout-cell u-size-60 u-layout-cell-1">
-              <div class="u-container-layout u-container-layout-1">
-                <h5 class="u-custom-font u-text u-text-default u-text-font u-text-1"> Supervised Learning Paradigm</h5>
-                <div class="u-clearfix u-expanded-width u-group-elements u-group-elements-1">
-                  <img class="u-image u-image-contain u-image-round u-radius-10 u-image-1" src="img/graph1.png" alt=""
-                    data-image-width="640" data-image-height="480" data-animation-name="customAnimationIn"
-                    data-animation-duration="2000" data-animation-direction="">
-                  <p class="u-hover-feature u-text u-text-default u-text-2" data-animation-name="customAnimationIn"
-                    data-animation-duration="2750" data-animation-direction="">
-                    <span style="font-weight: 700; text-decoration: underline !important;">User watch history by
-                      genre</span>
-                    <br>Total watched (Nov) = 23<br>Action = 4 / 23 = <span class="u-text-palette-3-base">0.17 (1 out of
-                      9)</span>
-                    <br>Thriller = 10 / 23 =&nbsp;<span class="u-text-palette-1-base">0.43 (5 out of 9)</span>
-                    <br>Horror = 3 / 23 = <span class="u-text-custom-color-1">0.13&nbsp;(1 out of 9 )</span>
-                    <br>Sci-fi = 6 / 23 =&nbsp;<span class="u-text-custom-color-2">0.26 (2 out of 9)</span>
-                    <br>
-                    <br>
-                  </p>
-                </div>
-                <h5 class="u-custom-font u-text u-text-default u-text-font u-text-3">Database snippet</h5>
-                <div class="u-clearfix u-custom-html u-custom-html-1" data-animation-name="customAnimationIn"
-                  data-animation-duration="1000" data-animation-direction="">
-                  <link rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
-                  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-                  <script>hljs.initHighlightingOnLoad();</script>
-                  <pre>                      <code class="csv">title,genre,rotten tomatoes,rating,Budget (millions),release date
-Anonymous,Drama,46,66,30,2011
-Apollo 18,Horror,23,31,5,2011
-Armored,Action,40,34,20,2009 </code>
-                    </pre>
-                </div>
-                <h5 class="u-custom-font u-text u-text-default u-text-font u-text-4">Calculations<br>
-                </h5>
-                <div class="u-clearfix u-custom-html u-white u-custom-html-2" data-animation-name="customAnimationIn"
-                  data-animation-duration="1000">
-                  <link rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
-                  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-                  <script>hljs.initHighlightingOnLoad();</script>
-                  <pre>
-                      <code class="python"> class History:
-    def __init__(self, mov_watched:dict) -&gt; None:
-        self.mov_watched = mov_watched  # {"Action" : 2, ...
-        self.num_mov_to_generate = 9
-        self.genres = mov_watched.keys()
-        self.watch_time = mov_watched.values()
-    def num_mov_by_genre(self) -&gt; dict:
-        total_mov = sum(self.mov_watched.values())
-        result = {}
-        mov_left = self.num_mov_to_generate
-        highest_watched = ["", 0]
-        for genre, num_watched in self.mov_watched.items():
-            num = num_watched / total_mov
-            x = int(round(num, 2) * self.num_mov_to_generate)
-            result[genre] = x
-            
-            if num &gt; highest_watched[1]: 
-                highest_watched[0] = genre
-                highest_watched[1] = num
-            mov_left -= x
-        if mov_left &gt; 0:
-            result[highest_watched[0]] += mov_left
-        return result </code>
-                    </pre>
-                </div>
-                <h5 class="u-custom-font u-text u-text-default u-text-font u-text-5">Generate highest rated movies</h5>
-                <div class="u-clearfix u-custom-html u-white u-custom-html-3" data-animation-name="customAnimationIn"
-                  data-animation-duration="1000">
-                  <link rel="stylesheet"
-                    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
-                  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-                  <script>hljs.initHighlightingOnLoad();</script>
-                  <pre>
-                      <code class="python"> def get_recommended_type(self) -&gt; list:
-	rec_movies = []
-	
-	with open("movies.csv", encoding="utf-8") as data:
-		# Fetch from local database
-		headers = dict(enumerate(data.readline().split(",")))  
-		headers = {value:key for key, value in headers.items()}
-		self.headers = headers
-		movies = csv.reader(data)
-		for movie in movies:
-			if self.rec in movie[self.headers[self.rec_type]]:
-				rec_movies.append(movie)
-	return rec_movies
-def get_recommended_movies(self) -&gt; list:
-	movies_by_type = self.get_recommended_type()
-	
-	# sorted =&gt; TimSort Algo. | O(n*log(n))
-	self.recommendation = sorted(movies_by_type, key = lambda x: x[self.headers["rating"]], reverse = True)[ : self.rec_num] </code>
-                    </pre>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </section>
   <section class="u-clearfix u-grey-75 u-section-4" id="sec-138a">
     <!-- 
        ###########################################################   
@@ -211,24 +106,26 @@ def get_recommended_movies(self) -&gt; list:
        -->
     <div class="u-clearfix u-sheet u-sheet-1">
       <p class="u-align-center u-custom-font u-font-roboto-slab u-text u-text-1" data-animation-name="bounceIn"
-        data-animation-duration="2500" data-animation-delay="0" data-animation-direction="Left">Watch Movies<span
+        data-animation-duration="2500" data-animation-delay="0" data-animation-direction="Left">Collabrative Recommendation<span
           class="u-file-icon u-icon u-icon-1">
           <img src="img/3161551.png" alt=""></span>
       </p>
+      
       <div class="u-expanded-width u-layout-horizontal u-list u-list-1">
         <div class="u-repeater u-repeater-1">
           <div
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-1"
             data-image-width="960" data-image-height="1201">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-image-1" id="LM_image1" data-image-width="960"
+              <div class="u-background-effect-image u-expanded u-image u-image-1" id="Collabrative_image_0" data-image-width="960"
                 data-image-height="1201"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-1">
-              <h4 id="movie_info_1" hidden="true">Fast Five,Action,78,83,125,2011</h4>
-              <a onclick="record_movie('movie_info_1')" class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-1">
+              <h4 id="movie_info_1" hidden="true"></h4>
+              <a onclick="record_movie('movie_info_1')"
+                class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-1">
                 Watch</a>
-              <p class="u-text u-text-default u-text-2">Genre: Action<br>Year: 2011<br>Rate: 83
+              <p id="movie_info_txt_1" class="u-text u-text-default u-text-2">
               </p>
             </div>
           </div>
@@ -236,16 +133,15 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-2"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-shading u-image-2" id="LM_image2" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div class="u-background-effect-image u-expanded u-image u-shading u-image-2" id="Collabrative_image_1"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-2">
-              <h4 id="movie_info_2" hidden="true">The Eye,Horror,22,51,12,2008</h4>
-
+              <h4 id="movie_info_2" hidden="true"></h4>
               <a onclick="record_movie('movie_info_2')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-2">Watch<br>
               </a>
-              <p class="u-text u-text-default u-text-3"> Gener: Horror<br>Year: 2008<br>Rate: 51
+              <p id="movie_info_txt_2" class="u-text u-text-default u-text-3">
               </p>
             </div>
           </div>
@@ -253,14 +149,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-3"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-shading u-image-3" id="LM_image3" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div class="u-background-effect-image u-expanded u-image u-shading u-image-3" id="Collabrative_image_2"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-3">
-              <h4 id="movie_info_3" hidden="true">Red State,Horror,57,59,4,2011</h4>
+              <h4 id="movie_info_3" hidden="true"></h4>
               <a onclick="record_movie('movie_info_3')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-3">Watch</a>
-              <p class="u-text u-text-default u-text-4"> Gener: Horror<br>Year: 2011<br>Rate: 59
+              <p id="movie_info_txt_3" class="u-text u-text-default u-text-4"> 
               </p>
             </div>
           </div>
@@ -268,14 +164,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-4"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-shading u-image-4" id="LM_image4" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div class="u-background-effect-image u-expanded u-image u-shading u-image-4" id="Collabrative_image_3"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-4">
-              <h4 id="movie_info_4" hidden="true">Speed Racer,Action,38,61,120,2008</h4>
+              <h4 id="movie_info_4" hidden="true"></h4>
               <a onclick="record_movie('movie_info_4')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-4">Watch</a>
-              <p class="u-text u-text-default u-text-5"> Gener: Action<br>Year: 2008<br>Rate: 61
+              <p id="movie_info_txt_4" class="u-text u-text-default u-text-5"> 
               </p>
             </div>
           </div>
@@ -283,14 +179,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-5"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-shading u-image-5" id="LM_image5" data-image-width="1012"
-                data-image-height="1500"></div>
+              <div class="u-background-effect-image u-expanded u-image u-shading u-image-5" id="Collabrative_image_4"
+                data-image-width="1012" data-image-height="1500"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-5">
-              <h4 id="movie_info_5" hidden="true">Limitless,Thriller,69,73,27,2011</h4>
+              <h4 id="movie_info_5" hidden="true"></h4>
               <a onclick="record_movie('movie_info_5')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-5">Watch</a>
-              <p class="u-text u-text-default u-text-6"> Gener: Thriller<br>Year: 2011<br>Rate: 73
+              <p id="movie_info_txt_5" class="u-text u-text-default u-text-6"> 
               </p>
             </div>
           </div>
@@ -298,14 +194,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-6"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-shading u-image-6" id="LM_image6" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div class="u-background-effect-image u-expanded u-image u-shading u-image-6" id="Collabrative_image_5"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-6">
-              <h4 id="movie_info_6" hidden="true">Gamer ,Action,29,43,13,2009</h4>
+              <h4 id="movie_info_6" hidden="true"></h4>
               <a onclick="record_movie('movie_info_6')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-6">Watch</a>
-              <p class="u-text u-text-default u-text-7"> Gener: Action<br>Year: 2009<br>Rate: 43
+              <p id="movie_info_txt_6" class="u-text u-text-default u-text-7"> 
               </p>
             </div>
           </div>
@@ -313,14 +209,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-7"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-shading u-image-7" id="LM_image7" data-image-width="1000"
-                data-image-height="1482"></div>
+              <div class="u-background-effect-image u-expanded u-image u-shading u-image-7" id="Collabrative_image_6"
+                data-image-width="1000" data-image-height="1482"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-7">
-              <h4 id="movie_info_7" hidden="true">Mirrors,Horror,14,49,35,2008</h4>
+              <h4 id="movie_info_7" hidden="true"></h4>
               <a onclick="record_movie('movie_info_7')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-7">Watch</a>
-              <p class="u-text u-text-default u-text-8"> Gener: Horror<br>Year: 2008<br>Rate: 49
+              <p id="movie_info_txt_7" class="u-text u-text-default u-text-8"> 
               </p>
             </div>
           </div>
@@ -328,14 +224,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-8"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-shading u-image-8" id="LM_image8" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div class="u-background-effect-image u-expanded u-image u-shading u-image-8" id="Collabrative_image_7"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-8">
-              <h4 id="movie_info_8" hidden="true">The Pink Panther 2 ,Adventure,12,47,59,2009</h4>
+              <h4 id="movie_info_8" hidden="true"></h4>
               <a onclick="record_movie('movie_info_8')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-8">Watch</a>
-              <p class="u-text u-text-default u-text-9"> Gener: Adventure<br>Year: 2009<br>Rate: 47
+              <p id="movie_info_txt_8" class="u-text u-text-default u-text-9">
               </p>
             </div>
           </div>
@@ -343,14 +239,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-9"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div class="u-background-effect-image u-expanded u-image u-shading u-image-9" id="LM_image9" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div class="u-background-effect-image u-expanded u-image u-shading u-image-9" id="Collabrative_image_8"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-9">
-              <h4 id="movie_info_9" hidden="true">Zookeeper,Comedy,14,42,80,2011</h4>
+              <h4 id="movie_info_9" hidden="true"></h4>
               <a onclick="record_movie('movie_info_9')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-9">Watch</a>
-              <p class="u-text u-text-default u-text-10"> Gener: Comedy<br>Year: 2011<br>Rate: 42
+              <p id="movie_info_txt_9" class="u-text u-text-default u-text-10"> 
               </p>
             </div>
           </div>
@@ -416,7 +312,7 @@ def get_recommended_movies(self) -&gt; list:
       </div>
     </div>
   </section>
-    <!-- 
+  <!-- 
        ###########################################################   
        ########    Movies recommednded section starts here   
        ###########################################################     
@@ -424,8 +320,7 @@ def get_recommended_movies(self) -&gt; list:
   <section class="u-clearfix u-grey-75 u-section-5" id="carousel_adcd">
     <div class="u-clearfix u-sheet u-sheet-1">
       <p class="u-align-center u-custom-font u-font-roboto-slab u-text u-text-1" data-animation-name="bounceIn"
-        data-animation-duration="2500" data-animation-delay="0" data-animation-direction="Left">Recommended
-        Movies&nbsp;<span class="u-file-icon u-icon u-icon-1">
+        data-animation-duration="2500" data-animation-delay="0" data-animation-direction="Left">Content-based recommendation&nbsp;<span class="u-file-icon u-icon u-icon-1">
           <img src="img/411724.png" alt=""></span>
       </p>
       <div class="u-expanded-width u-layout-horizontal u-list u-list-1">
@@ -434,45 +329,43 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-1"
             data-image-width="960" data-image-height="1201">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image0" class="u-background-effect-image u-expanded u-image u-image-1" data-image-width="960"
+              <div id="ContentBased_image_0" class="u-background-effect-image u-expanded u-image u-image-1" data-image-width="960"
                 data-image-height="1201"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-1">
               <h4 id="movie_info_10" hidden="true"></h4>
               <a onclick="record_movie('movie_info_10')"
-              class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-1">Watch</a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-2">Gener: Action<br>Year: 2013<br>Rate: 84
-              </p>
+                class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-1">Watch</a>
+              <p id="movie_info_txt_10" class="u-text u-text-default u-text-2"></p>
             </div>
           </div>
           <div
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-2"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image1" class="u-background-effect-image u-expanded u-image u-shading u-image-2" data-image-width="1131"
-                data-image-height="1600"></div>
-              </div>
+              <div id="ContentBased_image_1" class="u-background-effect-image u-expanded u-image u-shading u-image-2"
+                data-image-width="1131" data-image-height="1600"></div>
+            </div>
             <div class="u-container-layout u-similar-container u-container-layout-2">
               <h4 id="movie_info_11" hidden="true"></h4>
               <a onclick="record_movie('movie_info_11')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-2">Watch<br>
               </a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-3"> Gener: Action<br>Year: 2013<br>Rate: 84
-              </p>
+              <p id="movie_info_txt_11" class="u-text u-text-default u-text-3"> </p>
             </div>
           </div>
           <div
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-3"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image2" class="u-background-effect-image u-expanded u-image u-shading u-image-3" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div id="ContentBased_image_2" class="u-background-effect-image u-expanded u-image u-shading u-image-3"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-3">
               <h4 id="movie_info_12" hidden="true"></h4>
               <a onclick="record_movie('movie_info_12')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-3">Watch</a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-4"> Gener: Adventure<br>Year: 2019<br>Rate: 81
+              <p id="movie_info_txt_12" class="u-text u-text-default u-text-4"> 
               </p>
             </div>
           </div>
@@ -480,14 +373,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-4"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image3" class="u-background-effect-image u-expanded u-image u-shading u-image-4" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div id="ContentBased_image_3" class="u-background-effect-image u-expanded u-image u-shading u-image-4"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-4">
               <h4 id="movie_info_13" hidden="true"></h4>
               <a onclick="record_movie('movie_info_13')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-4">Watch</a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-5"> Gener: Adventure<br>Year: 2019<br>Rate: 81
+              <p id="movie_info_txt_13" class="u-text u-text-default u-text-5"> 
               </p>
             </div>
           </div>
@@ -495,14 +388,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-5"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image4" class="u-background-effect-image u-expanded u-image u-shading u-image-5" data-image-width="1012"
-                data-image-height="1500"></div>
+              <div id="ContentBased_image_4" class="u-background-effect-image u-expanded u-image u-shading u-image-5"
+                data-image-width="1012" data-image-height="1500"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-5">
               <h4 id="movie_info_14" hidden="true"></h4>
               <a onclick="record_movie('movie_info_14')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-5">Watch</a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-6"> Gener: Adventure<br>Year: 2019<br>Rate: 81
+              <p id="movie_info_txt_14" class="u-text u-text-default u-text-6"> 
               </p>
             </div>
           </div>
@@ -510,14 +403,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-6"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image5" class="u-background-effect-image u-expanded u-image u-shading u-image-6" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div id="ContentBased_image_5" class="u-background-effect-image u-expanded u-image u-shading u-image-6"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-6">
               <h4 id="movie_info_15" hidden="true"></h4>
               <a onclick="record_movie('movie_info_15')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-6">Watch</a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-7"> Gener: Adventure<br>Year: 2019<br>Rate: 81
+              <p id="movie_info_txt_15" class="u-text u-text-default u-text-7"> 
               </p>
             </div>
           </div>
@@ -525,14 +418,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-7"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image6" class="u-background-effect-image u-expanded u-image u-shading u-image-7" data-image-width="1000"
-                data-image-height="1482"></div>
+              <div id="ContentBased_image_6" class="u-background-effect-image u-expanded u-image u-shading u-image-7"
+                data-image-width="1000" data-image-height="1482"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-7">
               <h4 id="movie_info_16" hidden="true"></h4>
               <a onclick="record_movie('movie_info_16')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-7">Watch</a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-8"> Gener: Adventure<br>Year: 2019<br>Rate: 81
+              <p id="movie_info_txt_16" class="u-text u-text-default u-text-8"> 
               </p>
             </div>
           </div>
@@ -540,14 +433,14 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-8"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image7" class="u-background-effect-image u-expanded u-image u-shading u-image-8" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div id="ContentBased_image_7" class="u-background-effect-image u-expanded u-image u-shading u-image-8"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-8">
               <h4 id="movie_info_17" hidden="true"></h4>
               <a onclick="record_movie('movie_info_17')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-8">Watch</a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-9"> Gener: Adventure<br>Year: 2019<br>Rate: 81
+              <p id="movie_info_txt_17" class="u-text u-text-default u-text-9"> 
               </p>
             </div>
           </div>
@@ -555,20 +448,26 @@ def get_recommended_movies(self) -&gt; list:
             class="u-container-style u-effect-hover-zoom u-image-round u-list-item u-radius-38 u-repeater-item u-shading u-list-item-9"
             data-image-width="1131" data-image-height="1600">
             <div class="u-background-effect u-expanded">
-              <div id="RM_image8" class="u-background-effect-image u-expanded u-image u-shading u-image-9" data-image-width="1131"
-                data-image-height="1600"></div>
+              <div id="ContentBased_image_8" class="u-background-effect-image u-expanded u-image u-shading u-image-9"
+                data-image-width="1131" data-image-height="1600"></div>
             </div>
             <div class="u-container-layout u-similar-container u-container-layout-9">
               <h4 id="movie_info_18" hidden="true"></h4>
               <a onclick="record_movie('movie_info_18')"
                 class="u-border-none u-btn u-btn-round u-button-style u-palette-2-base u-radius-32 u-btn-9">Watch</a>
-              <p name="movie_info_txt" class="u-text u-text-default u-text-10"> Gener: Adventure<br>Year: 2019<br>Rate: 81</p>
+              <p id="movie_info_txt_18" class="u-text u-text-default u-text-10"> </p>
             </div>
           </div>
         </div>
         <!-- 
           ###########################################################   
           ########    Movies recommended section ends here   
+          ###########################################################     
+       -->
+
+        <!-- 
+          ###########################################################   
+          ########    Left-Right buttons start here  
           ###########################################################     
        -->
         <a class="u-absolute-vcenter u-gallery-nav u-gallery-nav-prev u-grey-70 u-icon-circle u-opacity u-opacity-70 u-spacing-10 u-text-palette-2-base u-gallery-nav-1"
@@ -626,63 +525,6 @@ def get_recommended_movies(self) -&gt; list:
       </div>
     </div>
   </section>
-  <section class="u-align-center u-clearfix u-grey-5 u-section-6" id="carousel_2c98">
-    <div class="u-clearfix u-sheet u-sheet-1">
-      <h2 class="u-text u-text-1">Thank you for your attention</h2>
-      <div class="u-expanded-width u-list u-list-1">
-        <div class="u-repeater u-repeater-1">
-          <div class="u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top-sm u-valign-top-xs u-container-layout-1">
-              <div
-                class="u-border-2 u-border-palette-1-base u-container-style u-expanded-width u-group u-palette-1-base u-radius-20 u-shape-round u-group-1">
-                <div class="u-container-layout u-container-layout-2"><span class="u-file-icon u-icon u-icon-1"><img
-                      src="img/3135810.png" alt=""></span>
-                  <p class="u-custom-font u-font-roboto-slab u-large-text u-text u-text-variant u-text-2">18-0155</p>
-                  <p class="u-custom-font u-font-roboto-slab u-large-text u-text u-text-variant u-text-3">Ahmed Al
-                    Riyami</p>
-                  <p class="u-text u-text-4">Implementation.<br>Lead design.<br>Research.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top-sm u-valign-top-xs u-container-layout-3">
-              <div
-                class="u-border-2 u-border-palette-1-base u-container-style u-expanded-width u-group u-palette-1-base u-radius-20 u-shape-round u-group-2">
-                <div class="u-container-layout u-container-layout-4"><span class="u-file-icon u-icon u-icon-2"><img
-                      src="img/3135810.png" alt=""></span>
-                  <p class="u-custom-font u-font-roboto-slab u-large-text u-text u-text-variant u-text-5">19-</p>
-                  <p class="u-custom-font u-font-roboto-slab u-large-text u-text u-text-variant u-text-6">Mohammed Al
-                    Ismaeli</p>
-                  <p class="u-text u-text-default u-text-7">Algorithm Research.<br>Project Analysis.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="u-container-style u-list-item u-repeater-item">
-            <div class="u-container-layout u-similar-container u-valign-top-sm u-valign-top-xs u-container-layout-5">
-              <div
-                class="u-border-2 u-border-palette-1-base u-container-style u-expanded-width u-group u-palette-1-base u-radius-20 u-shape-round u-group-3">
-                <div class="u-container-layout u-container-layout-6"><span class="u-file-icon u-icon u-icon-3"><img
-                      src="img/3135810.png" alt=""></span>
-                  <p class="u-custom-font u-font-roboto-slab u-large-text u-text u-text-variant u-text-8">17-0026</p>
-                  <p class="u-custom-font u-font-roboto-slab u-large-text u-text u-text-variant u-text-9">Nasser Al
-                    Wahibi</p>
-                  <p class="u-text u-text-default u-text-10">Leader.&nbsp;<br>Research and report.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <img class="u-image u-image-round u-radius-10 u-image-1" src="img/GUtech_logo.png" alt="" data-image-width="1584"
-        data-image-height="747">
-    </div>
-  </section>
-
 </body>
 
 </html>
