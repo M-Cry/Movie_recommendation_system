@@ -82,7 +82,7 @@ class Collabrative(Db):
 
             # set up to refine the recommendations
             corr_aliens = corr_aliens.join(ratings['number_of_ratings'])
-            recommendations = corr_aliens[corr_aliens['number_of_ratings'] > 3].sort_values(by='Correlation', ascending=False).head()
+            recommendations = corr_aliens[corr_aliens['number_of_ratings'] > 3].sort_values(by='Correlation', ascending=False).head(9)
 
             # get recommendations info
             file = pd.read_csv(self.db_name, sep=",")
